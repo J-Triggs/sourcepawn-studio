@@ -91,7 +91,7 @@ export async function run(args: URI): Promise<number> {
   outputDir += basename(fileToCompilePath, ".sp") + ".smx";
 
   // Add the compiler options from the settings.
-  const compilerArguments: string[] = getConfig(Section.LSP, "compiler.arguments", workspaceFolder);
+  //const compilerArguments: string[] = getConfig(Section.LSP, "compiler.arguments", workspaceFolder);
   const includePaths: string[] = [
     join(scriptingFolderPath, "include"),
     scriptingFolderPath,
@@ -106,11 +106,11 @@ export async function run(args: URI): Promise<number> {
   )
     .forEach((e) => includePaths.push(e));
 
-  let compilerArgs = [fileToCompilePath, `-o${outputDir}`];
+  let compilerArgs = [fileToCompilePath]; //, `-o ${outputDir}`
 
   // Add include paths and compiler options to compiler args.
-  includePaths.forEach((path) => compilerArgs.push(`-i${path}`));
-  compilerArgs = compilerArgs.concat(compilerArguments);
+  //includePaths.forEach((path) => compilerArgs.push(`-i ${path}`));
+  //compilerArgs = compilerArgs.concat(compilerArguments);
 
   // Create Output Channel if it does not exist.
   if (!output) {
@@ -133,12 +133,13 @@ export async function run(args: URI): Promise<number> {
       compilerArgs.unshift("-x86_64", spcomp);
     }
     let command = spcompCommand;
-    compilerArgs.forEach((e) => {
-      command += e + " ";
-      if (e.length > 10) {
-        command += "\n";
-      }
-    });
+//    compilerArgs.forEach((e) => {
+//      command += " " + e;
+//      if (e.length > 10) {
+//        command += "\n";
+//      }
+//    });
+	command += " " + fileToCompilePath;
     output.appendLine(`${command}\n`);
 
     // Execute
